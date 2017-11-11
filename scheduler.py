@@ -18,12 +18,31 @@ client = Client(settings['SID'], settings['KEY'])
 
 app = Flask(__name__)
 
+
+def scan_for_intros(request_body, number):
+    '''Send reasonable looking responses when given as a fake number'''
+    is_likely_intro = False
+    for kw in ('hey it', 'nice to', 'my num'):
+        if kw in request_body.lower():
+            is_likely_intro = True
+    if (len(filter(lambda x: x['phone_number'] == number,
+                   settings['SCHEDULES'])) == 0
+        and (not 'STARTX' in request_body)):
+        is_likely_intro = True
+    if is_likely_intro:
+        reply = MessagingResponse()
+        reply.message('nice to hear from you! I\'ll be in touch!')
+        return str(reply)
+
 @app.route('/', methods=['GET', 'POST'])
 def handle_sms():
     '''Use chatbot to respond to messages'''
     reply = MessagingResponse()
     phone_num = request.values['From']
     body = request.values['Body']
+    intro = scan_for_intros(body, request.values['From'])
+    if intro is not None:
+        return intro
     text = body.split(' ')
 
     # checks if number is in the database
@@ -39,7 +58,6 @@ def handle_sms():
         settings['SCHEDULES'].append({"username": text[-2], "phone_number": phone_num,
             "frequency": text[-1]})
     
-
     print(request.values)
     # delete number from schedule
     for index, schedule in enumerate(settings['SCHEDULES']):
