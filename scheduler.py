@@ -21,7 +21,18 @@ app = Flask(__name__)
 def handle_sms():
     '''Use chatbot to respond to messages'''
     reply = MessagingResponse()
+    phone_num = request.values['From']
     body = request.values['Body']
+    text = body.split(' ')
+    results = filter(lambda x: x['phone_number']= phone_num, settings['SCHEDULES'])
+
+    if len(results)>0:
+        settings['SCHEDULES']["frequency"] = text[-1]
+        settings['SCHEDULES']["username"] = text[-2]
+    else:
+        settings['SCHEDULES'].append({"username": text[-2], "phone_number": phone_num,
+            "frequency": text[-1]})
+
     try:
         response = reply_to_msg(body)
     except Exception as e:
