@@ -1,0 +1,26 @@
+{
+  "name": "wellesley_hackathon_2017",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"should probably set this up at some point\""
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/AlexPadron/WellesleyHackathon2017.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/AlexPadron/WellesleyHackathon2017/issues"
+  },
+  "homepage": "https://github.com/AlexPadron/WellesleyHackathon2017#readme",
+  "dependencies": {
+    "body-parser": "^1.18.2",
+    "ejs": "^2.5.7",
+    "express": "^4.16.2",
+    "express-session": "^1.15.6",
+    "mongoose": "^4.13.1"
+  }
+}
