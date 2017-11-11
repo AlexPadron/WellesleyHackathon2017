@@ -20,19 +20,17 @@ def reply_to_msg(msg):
     global chatbot
     return chatbot.get_response(msg)
 
+
 def gen():
     messages = json.loads(open('./settings.json').read())['MESSAGES']
     num = 0
-    while num < len(messages):
-        yield messages[num]
-        num += 1
     while True:
-        yield 'foo'
+        yield messages[num % len(messages)]
+        num += 1
 
 g = gen()
 
 def get_initial_msg(number, username):
-	'''
-	Initiates conversation with user by going in sequence of predefined chats
-	'''
-        return next(g)
+    '''Initiates conversation with user by going in sequence of predefined chats'''
+    global g
+    return next(g)
